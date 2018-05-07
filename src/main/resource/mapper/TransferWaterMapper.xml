@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fuzamei.demo.dao.TransferWaterDao">
+
+    <select id="selectTransferWater" parameterType="com.fuzamei.demo.model.DTO.TransferWaterDTO"
+            resultType="com.fuzamei.demo.model.TransferWater">
+        SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
+        FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
+        FROM
+        transferwater
+        WHERE 1 = 1
+        <if test="ACCNAME1 !=null and ACCNAME1 !=''" >
+        and ACC_NAME1 LIKE CONCAT('%',#{ACCNAME1},'%')
+        </if>
+        <if test="FLAG1 !=null and FLAG1!=''">
+        AND FLAG1=#{FLAG1}
+        </if>
+        <if test="ACCNO2 !=null and ACCNO2!=''">
+         AND ACCNO2=#{ACCNO2}
+        </if>
+         <if test="tranDate !=null">
+        AND tran_date &gt;= #{tranDate}
+         </if>
+        <if test="createDate !=null">
+        AND create_date &lt;= #{createDate}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="com.fuzamei.demo.model.TransferWater">
+        SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
+        FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
+        FROM transferwater
+    </select>
+
+</mapper>

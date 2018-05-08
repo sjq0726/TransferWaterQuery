@@ -1,13 +1,21 @@
 package com.fuzamei.demo.dao;
 
 import com.fuzamei.demo.model.DTO.TransferWaterDTO;
-import com.fuzamei.demo.model.TransferWater;
+import com.fuzamei.demo.model.NewTransferWater;
 
 import java.util.List;
 
 public interface TransferWaterDao {
 
-    List<TransferWater> findAll();
+    Integer numQuery1();
 
-    List<TransferWater> selectTransferWater(TransferWaterDTO transferWater);
+    Integer numQuery2();
+
+    void insertTransferWater();
+
+    void deleteTransferWater();
+
+    List<NewTransferWater> findAll();
+
+    List<NewTransferWater> selectTransferWater(TransferWaterDTO transferWater);
 }

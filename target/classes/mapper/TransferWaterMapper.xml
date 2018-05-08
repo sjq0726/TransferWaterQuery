@@ -4,11 +4,11 @@
 <mapper namespace="com.fuzamei.demo.dao.TransferWaterDao">
 
     <select id="selectTransferWater" parameterType="com.fuzamei.demo.model.DTO.TransferWaterDTO"
-            resultType="com.fuzamei.demo.model.TransferWater">
+            resultType="com.fuzamei.demo.model.NewTransferWater">
         SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
         FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
         FROM
-        transferwater
+        demo.newtransferwater
         WHERE 1 = 1
         <if test="ACCNAME1 !=null and ACCNAME1 !=''" >
         and ACC_NAME1 LIKE CONCAT('%',#{ACCNAME1},'%')
@@ -27,10 +27,27 @@
         </if>
     </select>
 
-    <select id="findAll" resultType="com.fuzamei.demo.model.TransferWater">
+    <select id="findAll" resultType="com.fuzamei.demo.model.NewTransferWater">
         SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
         FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
-        FROM transferwater
+        FROM demo.newtransferwater
+    </select>
+
+    <insert id="insertTransferWater">
+        INSERT INTO demo.newtransferwater
+        SELECT * from stockmgt.transferwater
+    </insert>
+
+    <update id="deleteTransferWater">
+      Truncate TABLE demo.newtransferwater
+    </update>
+    
+    <select id="numQuery1" resultType="java.lang.Integer">
+        SELECT count(*) from demo.newtransferwater
+    </select>
+
+    <select id="numQuery2" resultType="java.lang.Integer">
+        SELECT count(*) from stockmgt.transferwater
     </select>
 
 </mapper>

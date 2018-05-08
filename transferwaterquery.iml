@@ -46,5 +46,9 @@
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.10" level="project" />
     <orderEntry type="library" name="Maven: com.github.pagehelper:pagehelper:5.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.github.jsqlparser:jsqlparser:0.9.5" level="project" />
+    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:1.8.4" level="project" />
+    <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.2.11.RELEASE" level="project" />
   </component>
 </module>

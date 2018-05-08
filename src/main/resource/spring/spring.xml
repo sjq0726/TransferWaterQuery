@@ -21,15 +21,17 @@
     <!--<import resource="classpath:spring/mybatis-config.xml" />-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
-    <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSourceA">
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <bean id="dataSourceMaster" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="url" value="${jdbc.urlA}"/>
         <property name="driverClassName" value="${jdbc.driverClassName}" />
         <property name="username" value="${jdbc.username}" />
         <property name="password" value="${jdbc.password}" />
     </bean>
 
-    <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSourceB">
-        <property name="url" value="${jdbc.urlB}"/>
+    <bean id="dataSourceSlave" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <property name="url" value="${jdbc.urlB}"/>
         <property name="driverClassName" value="${jdbc.driverClassName}" />
         <property name="username" value="${jdbc.username}" />
         <property name="password" value="${jdbc.password}" />
@@ -37,24 +39,26 @@
 
 
     <!-- 配置数据库切换 -->
-    <bean id="dynamicDataSource" class="com.fuzamei.demo.utils.DynamicDataSource">
-        <property name="targetDataSources">
-            <map key-type="java.lang.String">
-                <entry value-ref="dataSourceA" key="dataSourceA"></entry>
-                <entry value-ref="dataSourceB" key="dataSourceB"></entry>
-            </map>
-        </property>
-        <!-- 默认连接数据库 -->
-        <property name="defaultTargetDataSource" ref="dataSourceA"/>
+    <bean id="dataSource" class="com.fuzamei.demo.utils.ThreadLocalRountingDataSource">
+                <property name="targetDataSources">
+                   <map key-type="com.fuzamei.demo.model.DataSources">
+                      <entry key="MASTER" value-ref="dataSourceMaster" />
+                        <entry key="SLAVE" value-ref="dataSourceSlave"/>
+                    </map>
+                </property>
+                <property name="defaultTargetDataSource" ref="dataSourceMaster"></property>
+
     </bean>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dynamicDataSource"></property>
+        <property name="dataSource" ref="dataSource"></property>
     </bean>
+
+    <bean id="transferWaterService" class="com.fuzamei.demo.service.impl.TransferWaterServiceImpl" />
 
     <!-- 集合mybatis -->
     <bean name="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dynamicDataSource"></property>
+        <property name="dataSource" ref="dataSource"></property>
         <!-- 自动扫描model目录, 省掉Configuration.xml里的手工配置 -->
         <property name="typeAliasesPackage" value="com.fuzamei.demo.model" />
         <!-- 显式指定Mapper文件位置 -->
@@ -82,5 +86,33 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.fuzamei.demo.dao" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+
+    <!--定时器-->
+    <!--要调度的对象-->
+    <bean id="jobBean" class="com.fuzamei.demo.utils.TimedTask" >
+    </bean>
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="jobBean" />
+        <property name="targetMethod" value="change" />
+        <!--将并发设置为false-->
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="jobDetail" />
+        <!--表达式，我的是每 30s 执行一次-->
+        <property name="cronExpression" value="0/1 * * * * ?" />
+    </bean>
+
+    <!--  总管理类如果将lazy-init='false'那么容器启动就会执行调度程序   -->
+    <bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false" >
+        <property name="triggers">
+            <list>
+                <!--作业调度器,list下可加入其他的调度器-->
+                <ref bean="trigger" />
+            </list>
+        </property>
     </bean>
 </beans>

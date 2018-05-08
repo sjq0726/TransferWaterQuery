@@ -2,7 +2,7 @@ package com.fuzamei.demo.model;
 
 import java.util.Date;
 
-public class TransferWater {
+public class NewTransferWater {
 
 	private Integer id;
 	private String platformtoken;

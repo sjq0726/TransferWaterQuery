@@ -13,6 +13,8 @@ public interface TransferWaterService {
 
     Integer numQuery2();
 
+    Integer countPage(TransferWaterDTO transferWaterDTO);
+
     void insertTransferWater();
 
     void deleteTransferWater();

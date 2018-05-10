@@ -30,17 +30,14 @@
 
     <mvc:default-servlet-handler />
 
+    <!--拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/*"/>
-            <mvc:exclude-mapping path="/login"/>
-            <bean class="com.fuzamei.demo.interceptor.UserInterceptor"/>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/TransferWater/login"/>
+            <bean class="com.fuzamei.demo.interceptor.TokenInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
-    <!--全局跨域访问-->
-    <mvc:cors>
-        <mvc:mapping path="/cross/**"/>
-    </mvc:cors>
 
 </beans>

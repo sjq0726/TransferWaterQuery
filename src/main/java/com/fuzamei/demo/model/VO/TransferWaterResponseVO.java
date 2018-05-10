@@ -11,4 +11,5 @@ import java.util.List;
 public class TransferWaterResponseVO {
     private Page<NewTransferWater> transferWaterPage;
     private String message;
+    private Integer countPage;
 }

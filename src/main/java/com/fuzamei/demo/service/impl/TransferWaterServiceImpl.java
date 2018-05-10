@@ -33,6 +33,11 @@ public class TransferWaterServiceImpl implements TransferWaterService {
     }
 
     @Override
+    public Integer countPage(TransferWaterDTO transferWaterDTO) {
+        return transferWaterDao.countPage(transferWaterDTO);
+    }
+
+    @Override
     public void insertTransferWater() {
         transferWaterDao.insertTransferWater();
     }

@@ -11,6 +11,8 @@ public interface TransferWaterDao {
 
     Integer numQuery2();
 
+    Integer countPage(TransferWaterDTO transferWaterDTO);
+
     void insertTransferWater();
 
     void deleteTransferWater();

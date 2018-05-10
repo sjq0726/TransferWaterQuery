@@ -27,11 +27,34 @@
         </if>
     </select>
 
-    <select id="findAll" resultType="com.fuzamei.demo.model.NewTransferWater">
+    <select id="countPage" parameterType="com.fuzamei.demo.model.DTO.TransferWaterDTO"
+            resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM(
         SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
         FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
-        FROM demo.newtransferwater
+        FROM
+        demo.newtransferwater
+        WHERE 1 = 1
+        <if test="ACCNAME1 !=null and ACCNAME1 !=''">
+            and ACC_NAME1 LIKE CONCAT('%',#{ACCNAME1},'%')
+        </if>
+        <if test="FLAG1 !=null and FLAG1!=''">
+            AND FLAG1=#{FLAG1}
+        </if>
+        <if test="ACCNO2 !=null and ACCNO2!=''">
+            AND ACCNO2=#{ACCNO2}
+        </if>
+        <if test="tranDate !=null">
+            AND tran_date &gt;= #{tranDate}
+        </if>
+        <if test="createDate !=null">
+            AND create_date &lt;= #{createDate}
+        </if>) as querytable
     </select>
+
+
+
 
     <insert id="insertTransferWater">
         INSERT INTO demo.newtransferwater

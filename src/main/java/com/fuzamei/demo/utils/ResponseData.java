@@ -26,7 +26,7 @@ public class ResponseData {
         return this;
     }
 
-    private ResponseData(int status, String info) {
+    public ResponseData(int status, String info) {
         this.status = status;
         this.info = info;
     }

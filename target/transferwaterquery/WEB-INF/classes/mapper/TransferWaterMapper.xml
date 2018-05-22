@@ -3,6 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fuzamei.demo.dao.TransferWaterDao">
 
+
+
     <select id="selectTransferWater" parameterType="com.fuzamei.demo.model.DTO.TransferWaterDTO"
             resultType="com.fuzamei.demo.model.NewTransferWater">
         SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
@@ -72,5 +74,57 @@
     <select id="numQuery2" resultType="java.lang.Integer">
         SELECT count(*) from stockmgt.transferwater
     </select>
+
+    <select id="seletetACCNAME1" resultType="java.lang.String">
+        SELECT acc_name1 from demo.newtransferwater GROUP BY acc_name1
+    </select>
+
+    
+    <select id="countNum"  resultType="java.lang.Integer" >
+        SELECT COUNT(*) FROM
+        (SELECT acc_name1 from demo.newtransferwater GROUP BY acc_name1) as num
+    </select>
+
+    <select id="selectTransferWaterByName" parameterType="String" resultType="com.fuzamei.demo.model.NewTransferWater">
+        SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
+        FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
+        from demo.newtransferwater
+        WHERE acc_name1=#{ACCNAME}
+    </select>
+
+    <select id="selectTransferWaterByNameList" parameterType="String" resultType="com.fuzamei.demo.model.NewTransferWater">
+        SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
+        FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
+        from demo.newtransferwater
+        WHERE acc_name1 IN
+        <foreach collection="list" separator="," open="(" close=")" item="name" index="">
+            #{name}
+        </foreach>
+    </select>
+
+
+    <select id="selectTransferWaterByNameAndFlag" parameterType="com.fuzamei.demo.model.DTO.TrandferWaterShowDTO"
+            resultType="com.fuzamei.demo.model.NewTransferWater">
+        SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
+        FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
+        from demo.newtransferwater
+        WHERE acc_name1=#{ACCNAME1} AND flag1=#{FLAG1}
+        <if test="id !=null">
+        AND id=#{id}
+        </if>
+
+    </select>
+
+    <select id="countTransferWaterByNameAndFlag" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM
+        (SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
+        FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
+        from demo.newtransferwater
+        WHERE acc_name1=#{ACCNAME1} AND flag1=#{FLAG1}
+        <if test="id !=null">
+        AND id=#{id}
+        </if>) as num
+    </select>
+
 
 </mapper>

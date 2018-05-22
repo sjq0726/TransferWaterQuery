@@ -39,9 +39,9 @@
 
 
     <!-- 配置数据库切换 -->
-    <bean id="dataSource" class="com.fuzamei.demo.utils.ThreadLocalRountingDataSource">
+    <bean id="dataSource" class="com.fuzamei.demo.datasource.ThreadLocalRountingDataSource">
                 <property name="targetDataSources">
-                   <map key-type="com.fuzamei.demo.model.DataSources">
+                   <map key-type="com.fuzamei.demo.datasource.DataSources">
                       <entry key="MASTER" value-ref="dataSourceMaster" />
                         <entry key="SLAVE" value-ref="dataSourceSlave"/>
                     </map>
@@ -91,7 +91,7 @@
 
     <!--定时器-->
     <!--要调度的对象-->
-    <bean id="jobBean" class="com.fuzamei.demo.utils.TimedTask" >
+    <bean id="jobBean" class="com.fuzamei.demo.task.TimedTask" >
     </bean>
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="jobBean" />

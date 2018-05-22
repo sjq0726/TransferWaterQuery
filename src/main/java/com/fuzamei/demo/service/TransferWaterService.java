@@ -1,9 +1,10 @@
 package com.fuzamei.demo.service;
 
+import com.fuzamei.demo.model.DTO.TrandferWaterShowDTO;
 import com.fuzamei.demo.model.DTO.TransferWaterDTO;
 import com.fuzamei.demo.model.NewTransferWater;
 import com.fuzamei.demo.model.VO.TransferWaterResponseVO;
-import com.github.pagehelper.Page;
+import com.fuzamei.demo.model.VO.TransferWaterShowVO;
 
 import java.util.List;
 
@@ -19,7 +20,17 @@ public interface TransferWaterService {
 
     void deleteTransferWater();
 
-    Page<NewTransferWater> findAll(Integer pn);
+    Integer countNum();
 
     TransferWaterResponseVO selectTransferWater(TransferWaterDTO transferWater,Integer pn);
+
+    List<TransferWaterShowVO> selectTransferWaterByName(Integer pn);
+
+    List<TransferWaterShowVO> selectTransferWaterByName();
+
+    List<NewTransferWater> selectTransferWaterByNameAndFlag(TrandferWaterShowDTO trandferWaterShowDTO,Integer pn);
+
+    Integer countTransferWaterByNameAndFlag(TrandferWaterShowDTO trandferWaterShowDTO);
+
+
 }

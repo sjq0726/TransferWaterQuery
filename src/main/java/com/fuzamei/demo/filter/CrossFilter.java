@@ -16,7 +16,8 @@ public class CrossFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "token");
+        response.setHeader("Access-Control-Allow-Headers", "token,Content-Type,X-Requested-With");
+        response.setHeader("Access-Control-Expose-Headers","status");
         chain.doFilter(req, res);
 
     }

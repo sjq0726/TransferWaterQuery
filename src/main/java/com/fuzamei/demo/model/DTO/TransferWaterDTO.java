@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
-public class TransferWaterDTO {
+public class
+TransferWaterDTO {
 
     private String ACCNO2;
     private String ACCNAME1;

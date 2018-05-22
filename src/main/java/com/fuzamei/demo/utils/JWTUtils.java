@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class JWTUtils {
 
-    private static final String SECRET = "XX#$%()(#*!()!KL<><MQLMNQNQJQK sdfkjsdrow32234545fdf>?N<:{LWPW";
+    private static final String SECRET = "MISHI";
 
     private static final String EXP = "exp";
 
@@ -36,10 +36,10 @@ public class JWTUtils {
         try {
             final Map<String,Object> claims= verifier.verify(jwt);
             if (claims.containsKey(EXP) && claims.containsKey(PAYLOAD)) {
-                long exp = (Long)claims.get(EXP);
+                long exp = (Long) claims.get(EXP);
                 long currentTimeMillis = System.currentTimeMillis();
                 if (exp > currentTimeMillis) {
-                    String json = (String)claims.get(PAYLOAD);
+                    String json = (String) claims.get(PAYLOAD);
                     ObjectMapper objectMapper = new ObjectMapper();
                     return objectMapper.readValue(json, classT);
                 }

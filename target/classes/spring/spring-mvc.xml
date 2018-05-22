@@ -35,9 +35,11 @@
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/TransferWater/login"/>
+            <mvc:exclude-mapping path="/TransferWater/createUser"/>
             <bean class="com.fuzamei.demo.interceptor.TokenInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+
 
 
 </beans>

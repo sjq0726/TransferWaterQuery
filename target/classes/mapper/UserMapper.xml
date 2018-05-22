@@ -7,4 +7,16 @@
     SELECT * FROM user WHERE username=#{username} AND password=#{password}
 </select>
 
+    <update id="updateToken" parameterType="com.fuzamei.demo.model.User" >
+       UPDATE user SET token=#{token} WHERE username=#{username} AND password=#{password}
+    </update>
+
+    <select id="findUser" parameterType="java.lang.String" resultType="com.fuzamei.demo.model.User">
+        SELECT * FROM user WHERE token=#{token}
+    </select>
+
+    <insert id="createUser" parameterType="com.fuzamei.demo.model.User" >
+        INSERT INTO user(username,password) VALUES (#{username},#{password})
+    </insert>
+
 </mapper>

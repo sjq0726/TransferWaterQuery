@@ -1,8 +1,10 @@
 package com.fuzamei.demo.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.fuzamei.demo.dao.TransferWaterDao;
 import com.fuzamei.demo.model.DTO.TrandferWaterShowDTO;
 import com.fuzamei.demo.model.DTO.TransferWaterDTO;
+import com.fuzamei.demo.model.DTO.TransferWaterMainDTO;
 import com.fuzamei.demo.model.NewTransferWater;
 import com.fuzamei.demo.model.VO.TransferWaterResponseVO;
 import com.fuzamei.demo.model.VO.TransferWaterShowVO;
@@ -11,16 +13,21 @@ import com.fuzamei.demo.datasource.DataSourceTypeManager;
 import com.fuzamei.demo.utils.ListUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service("transferWaterServiceImpl")
-public class TransferWaterServiceImpl implements TransferWaterService {
+public class TransferWaterServiceImpl implements TransferWaterService{
+
+    org.slf4j.Logger logger = LoggerFactory.getLogger(TransferWaterService.class);
 
     @Autowired
     private TransferWaterDao transferWaterDao;
@@ -78,8 +85,8 @@ public class TransferWaterServiceImpl implements TransferWaterService {
         Map<String ,List<NewTransferWater>> stringListMap=newTransferWaterList.stream()
                 .collect(Collectors.groupingBy(NewTransferWater::getACC_NAME1));
         for (String accName: accNameList) {
-            double totalAMTIn=0.0;
-            double totalAMTOut=0.0;
+            double in=0.0;
+            double out=0.0;
             String message=null;
             List<NewTransferWater> list = stringListMap.get(accName);
             if (ListUtils.isNotEmpty(list)) {
@@ -88,15 +95,18 @@ public class TransferWaterServiceImpl implements TransferWaterService {
                 for (NewTransferWater newTransferWater : list) {
                     if ("0".equals(newTransferWater.getFLAG1())) {
                         Double amtOut = Double.parseDouble(newTransferWater.getAMT());
-                        totalAMTOut += amtOut;
+                        out += amtOut;
                     } else {
                         Double amtIn = Double.parseDouble(newTransferWater.getAMT());
-                        totalAMTIn += amtIn;
+                        in += amtIn;
                     }
                 }
-                message = String.valueOf(totalAMTIn - totalAMTOut);
-                transferWaterShowVO.setAMTIn(String.valueOf(totalAMTIn));
-                transferWaterShowVO.setAMTOut(String.valueOf(totalAMTOut));
+                DecimalFormat format=new DecimalFormat("0.00");
+                String totalAMTIn=format.format(in);
+                String totalAMTOut=format.format(out);
+                message = format.format(in-out);
+                transferWaterShowVO.setAMTIn(totalAMTIn);
+                transferWaterShowVO.setAMTOut(totalAMTOut);
                 transferWaterShowVO.setTotal(message);
                 transferWaterShowVOList.add(transferWaterShowVO);
             }
@@ -111,18 +121,20 @@ public class TransferWaterServiceImpl implements TransferWaterService {
     @Override
     public List<TransferWaterShowVO> selectTransferWaterByName(Integer pn) {
         List<TransferWaterShowVO> transferWaterShowVOList=new ArrayList<TransferWaterShowVO>();
-        //List<String> accNameList=transferWaterDao.seletetACCNAME1();
+        //        //List<String> accNameList=transferWaterDao.seletetACCNAME1();
         Page<String> accNamePage=PageHelper.offsetPage(pn*10,10).doSelectPage(
                 ()->transferWaterDao.seletetACCNAME1());
-        if (ListUtils.isEmpty(accNamePage)){
-            return transferWaterShowVOList;
+        if (ListUtils.isEmpty(accNamePage.getResult())){
+
+            return null;
         }
-        List<NewTransferWater> transferWaterList=transferWaterDao.selectTransferWaterByNameList(accNamePage);
+        List<String> nameList = accNamePage.getResult();
+        List<NewTransferWater> transferWaterList=transferWaterDao.selectTransferWaterByNameList(nameList);
         Map<String,List<NewTransferWater>> stringListMap = transferWaterList.stream()
                 .collect(Collectors.groupingBy(NewTransferWater::getACC_NAME1));
         for ( String ACCNAME : accNamePage) {
-            double totalAMTIn=0.0;
-            double totalAMTOut=0.0;
+            double in=0.0;
+            double out=0.0;
             String message=null;
             List<NewTransferWater> list = stringListMap.get(ACCNAME);
             if (ListUtils.isNotEmpty(list)) {
@@ -131,19 +143,61 @@ public class TransferWaterServiceImpl implements TransferWaterService {
                 for (NewTransferWater newTransferWater : list) {
                     if ("0".equals(newTransferWater.getFLAG1())) {
                         Double amtOut = Double.parseDouble(newTransferWater.getAMT());
-                        totalAMTOut += amtOut;
+                        out += amtOut;
                     } else {
                         Double amtIn = Double.parseDouble(newTransferWater.getAMT());
-                        totalAMTIn += amtIn;
+                        in += amtIn;
                     }
                 }
-                message = String.valueOf(totalAMTIn - totalAMTOut);
-                transferWaterShowVO.setAMTIn(String.valueOf(totalAMTIn));
-                transferWaterShowVO.setAMTOut(String.valueOf(totalAMTOut));
+                DecimalFormat format=new DecimalFormat("0.00");
+                String totalAMTIn=format.format(in);
+                String totalAMTOut=format.format(out);
+                message = format.format(in-out);
+                transferWaterShowVO.setAMTIn(totalAMTIn);
+                transferWaterShowVO.setAMTOut(totalAMTOut);
                 transferWaterShowVO.setTotal(message);
                 transferWaterShowVOList.add(transferWaterShowVO);
             }
         }
+        return transferWaterShowVOList;
+    }
+
+    /**
+     * 单独的一个用户
+     * @param transferWaterMainDTO
+     * @return
+     */
+    @Override
+    public List<TransferWaterShowVO> selectTransferWaterByName(TransferWaterMainDTO transferWaterMainDTO) {
+        List<TransferWaterShowVO> transferWaterShowVOList=new ArrayList<TransferWaterShowVO>();
+        TransferWaterShowVO transferWaterShowVO=null;
+        //List<String> accNameList=transferWaterDao.seletetACCNAME1();
+        List<NewTransferWater> transferWaterList = transferWaterDao.selectTransferWaterByName(transferWaterMainDTO);
+        if (ListUtils.isEmpty(transferWaterList)) {
+            return transferWaterShowVOList;
+        }
+            double in = 0.0;
+            double out = 0.0;
+            String message = null;
+                transferWaterShowVO = new TransferWaterShowVO();
+                transferWaterShowVO.setACCName(transferWaterMainDTO.getACCName());
+                for (NewTransferWater newTransferWater : transferWaterList) {
+                    if ("0".equals(newTransferWater.getFLAG1())) {
+                        Double amtOut = Double.parseDouble(newTransferWater.getAMT());
+                        out += amtOut;
+                    } else {
+                        Double amtIn = Double.parseDouble(newTransferWater.getAMT());
+                        in += amtIn;
+                    }
+                }
+                DecimalFormat format=new DecimalFormat("0.00");
+                String totalAMTIn=format.format(in);
+                String totalAMTOut=format.format(out);
+                message = format.format(in-out);
+                transferWaterShowVO.setAMTIn(totalAMTIn);
+                transferWaterShowVO.setAMTOut(totalAMTOut);
+                transferWaterShowVO.setTotal(message);
+                transferWaterShowVOList.add(transferWaterShowVO);
         return transferWaterShowVOList;
     }
 
@@ -154,6 +208,11 @@ public class TransferWaterServiceImpl implements TransferWaterService {
                 ()->transferWaterDao.selectTransferWaterByNameAndFlag(trandferWaterShowDTO));
 
         return newTransferWaterPage;
+    }
+
+    @Override
+    public List<NewTransferWater> selectTransferWaterByNameAndFlag(TrandferWaterShowDTO trandferWaterShowDTO) {
+        return transferWaterDao.selectTransferWaterByNameAndFlag(trandferWaterShowDTO);
     }
 
     @Override

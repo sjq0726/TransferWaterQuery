@@ -55,6 +55,8 @@ public class ExportExcelUtils {
              *
              * new Region()  这个方法使过时的
              */
+
+
             // 合并第一行的所有列
             sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) (rowName.length-1)));
             cellTiltle.setCellStyle(columnTopStyle);
@@ -98,12 +100,14 @@ public class ExportExcelUtils {
                 }
             }
             //  让列宽随着导出的列长自动适应
-            sheet.autoSizeColumn(10,true); //调整第一列宽度
-            sheet.autoSizeColumn(10,true); //调整第二列宽度
-            sheet.autoSizeColumn(10,true); //调整第三列宽度
-            sheet.autoSizeColumn(10,true); //调整第四列宽度
-            sheet.autoSizeColumn(10,true); //调整第五列宽度
-            sheet.autoSizeColumn(10,true); //调整第六列宽度
+            sheet.autoSizeColumn(10); //调整第一列宽度
+            sheet.autoSizeColumn(50); //调整第二列宽度
+            sheet.autoSizeColumn(50); //调整第三列宽度
+            sheet.autoSizeColumn(50); //调整第四列宽度
+            sheet.autoSizeColumn(50); //调整第五列宽度
+            sheet.autoSizeColumn(50); //调整第六列宽度
+            sheet.autoSizeColumn(50); //调整第七列宽度
+            sheet.autoSizeColumn(50); //调整第八列宽度
 
             if(workbook !=null){
                 try

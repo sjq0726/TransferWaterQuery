@@ -11,22 +11,7 @@
         FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
         FROM
         demo.newtransferwater
-        WHERE 1 = 1
-        <if test="ACCNAME1 !=null and ACCNAME1 !=''" >
-        and ACC_NAME1 LIKE CONCAT('%',#{ACCNAME1},'%')
-        </if>
-        <if test="FLAG1 !=null and FLAG1!=''">
-        AND FLAG1=#{FLAG1}
-        </if>
-        <if test="ACCNO2 !=null and ACCNO2!=''">
-         AND ACCNO2=#{ACCNO2}
-        </if>
-         <if test="tranDate !=null">
-        AND tran_date &gt;= #{tranDate}
-         </if>
-        <if test="createDate !=null">
-        AND create_date &lt;= #{createDate}
-        </if>
+        WHERE  ACC_NAME1 =#{ACCName}
     </select>
 
     <select id="countPage" parameterType="com.fuzamei.demo.model.DTO.TransferWaterDTO"
@@ -37,22 +22,7 @@
         FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
         FROM
         demo.newtransferwater
-        WHERE 1 = 1
-        <if test="ACCNAME1 !=null and ACCNAME1 !=''">
-            and ACC_NAME1 LIKE CONCAT('%',#{ACCNAME1},'%')
-        </if>
-        <if test="FLAG1 !=null and FLAG1!=''">
-            AND FLAG1=#{FLAG1}
-        </if>
-        <if test="ACCNO2 !=null and ACCNO2!=''">
-            AND ACCNO2=#{ACCNO2}
-        </if>
-        <if test="tranDate !=null">
-            AND tran_date &gt;= #{tranDate}
-        </if>
-        <if test="createDate !=null">
-            AND create_date &lt;= #{createDate}
-        </if>) as querytable
+        WHERE  ACC_NAME1= #{ACCName}) as querytable
     </select>
 
 
@@ -85,11 +55,11 @@
         (SELECT acc_name1 from demo.newtransferwater GROUP BY acc_name1) as num
     </select>
 
-    <select id="selectTransferWaterByName" parameterType="String" resultType="com.fuzamei.demo.model.NewTransferWater">
+    <select id="selectTransferWaterByName" parameterType="com.fuzamei.demo.model.DTO.TransferWaterMainDTO" resultType="com.fuzamei.demo.model.NewTransferWater">
         SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
         FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
         from demo.newtransferwater
-        WHERE acc_name1=#{ACCNAME}
+        WHERE acc_name1=#{ACCName}
     </select>
 
     <select id="selectTransferWaterByNameList" parameterType="String" resultType="com.fuzamei.demo.model.NewTransferWater">
@@ -108,9 +78,18 @@
         SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
         FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
         from demo.newtransferwater
-        WHERE acc_name1=#{ACCNAME1} AND flag1=#{FLAG1}
-        <if test="id !=null">
-        AND id=#{id}
+        WHERE acc_name1=#{ACCName}
+        <if test="FLAG1 !=null">
+        AND flag1=#{FLAG1}
+        </if>
+        <if test="ACCNO2 !=null">
+        AND  accno2=#{ACCNO2}
+        </if>
+        <if test="tranDate !=null">
+        AND  tran_date &gt;= #{tranDate}
+        </if>
+        <if test="createDate !=null">
+         AND create_date &lt;= #{createDate}
         </if>
 
     </select>
@@ -120,9 +99,18 @@
         (SELECT id,platformtoken,accountid,TRANDATE,TRANTIME,CRE_TYP,CRE_NO,MESSAGE,AMT,AMT1,FLAG1,ACCNO2,ACC_NAME1,DET,
         FLAG2,TRANFLOW,BFLOW,DET_NO,RLTV_ACCNO,CADBank_Nm,tran_date,create_date,start
         from demo.newtransferwater
-        WHERE acc_name1=#{ACCNAME1} AND flag1=#{FLAG1}
-        <if test="id !=null">
-        AND id=#{id}
+        WHERE acc_name1=#{ACCName}
+        <if test="FLAG1 !=null">
+            AND flag1=#{FLAG1}
+        </if>
+        <if test="ACCNO2 !=null">
+            AND  accno2=#{ACCNO2}
+        </if>
+        <if test="tranDate !=null">
+            AND  tran_date &gt;= #{tranDate}
+        </if>
+        <if test="createDate !=null">
+            AND create_date &lt;= #{createDate}
         </if>) as num
     </select>
 

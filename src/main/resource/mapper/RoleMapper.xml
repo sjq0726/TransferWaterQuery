@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fuzamei.demo.dao.RoleDao">
+
+    <select id="selectRole" parameterType="com.fuzamei.demo.model.DTO.RoleDTO" resultType="com.fuzamei.demo.model.Role">
+        SELECT name,degree
+        FROM demo.role
+        <if test="mainDegree==1">
+        WHERE degree !='1'
+        </if>
+        <if test="mainDegree==2">
+        WHERE  degree !='1' AND degree!='2'
+        </if>
+        <if test="name !=null">
+        AND name=#{name}
+        </if>
+        <if test="secondDegree!=null">
+        AND degree=#{secondDegree}
+        </if>
+    </select>
+
+    <select id="countRole" parameterType="com.fuzamei.demo.model.DTO.RoleDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM
+        (SELECT name,degree
+        FROM demo.role
+        <if test="mainDegree==1">
+            WHERE degree !='1'
+        </if>
+        <if test="mainDegree==2">
+            WHERE  degree !='1' AND degree!='2'
+        </if>
+        <if test="secondDegree!=null">
+            AND degree=#{secondDegree}
+        </if>
+        <if test="name !=null">
+            AND name=#{name}
+        </if>) as newrole
+    </select>
+
+    <select id="selectRoleByName" parameterType="java.lang.String" resultType="com.fuzamei.demo.model.Role">
+        SELECT name,degree
+        FROM demo.role
+        WHERE name=#{name}
+    </select>
+
+
+    <update id="updateRole" parameterType="com.fuzamei.demo.model.Role" >
+        UPDATE demo.role
+        SET degree=#{degree}
+        WHERE name=#{name}
+    </update>
+
+    <insert id="addRole" parameterType="com.fuzamei.demo.model.Role">
+        INSERT INTO role VALUES (#{name},#{degree})
+    </insert>
+
+</mapper>

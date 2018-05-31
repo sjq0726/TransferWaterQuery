@@ -1,4 +1,4 @@
-package com.fuzamei.demo.datasource;
+package com.fuzamei.demo.constant;
 
 public enum DataSources {
     MASTER,SLAVE

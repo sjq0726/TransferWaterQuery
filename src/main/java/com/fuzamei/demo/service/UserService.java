@@ -1,6 +1,7 @@
 package com.fuzamei.demo.service;
 
 import com.fuzamei.demo.model.User;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserService {
 
@@ -11,4 +12,6 @@ public interface UserService {
      User findUser(String token);
 
      boolean createUser(User user);
+
+     User findUserByToken(String token);
 }

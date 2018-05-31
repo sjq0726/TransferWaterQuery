@@ -39,9 +39,9 @@
 
 
     <!-- 配置数据库切换 -->
-    <bean id="dataSource" class="com.fuzamei.demo.datasource.ThreadLocalRountingDataSource">
+    <bean id="dataSource" class="com.fuzamei.demo.utils.ThreadLocalRountingDataSource">
                 <property name="targetDataSources">
-                   <map key-type="com.fuzamei.demo.datasource.DataSources">
+                   <map key-type="com.fuzamei.demo.constant.DataSources">
                       <entry key="MASTER" value-ref="dataSourceMaster" />
                         <entry key="SLAVE" value-ref="dataSourceSlave"/>
                     </map>

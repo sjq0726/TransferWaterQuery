@@ -2,6 +2,7 @@ package com.fuzamei.demo.dao;
 
 import com.fuzamei.demo.model.DTO.TrandferWaterShowDTO;
 import com.fuzamei.demo.model.DTO.TransferWaterDTO;
+import com.fuzamei.demo.model.DTO.TransferWaterMainDTO;
 import com.fuzamei.demo.model.NewTransferWater;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,6 +27,8 @@ public interface TransferWaterDao {
 
     //查询所有的对方的名称
     List<String> seletetACCNAME1();
+
+    List<NewTransferWater> selectTransferWaterByName(TransferWaterMainDTO transferWaterMainDTO);
 
     //根据对方的名称查询
     List<NewTransferWater> selectTransferWaterByNameList(@Param("list") List<String> ACCNAMEList);

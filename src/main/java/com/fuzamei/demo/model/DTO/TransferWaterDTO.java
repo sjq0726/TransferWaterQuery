@@ -8,15 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
-public class
-TransferWaterDTO {
+public class TransferWaterDTO {
 
-    private String ACCNO2;
-    private String ACCNAME1;
-    private String FLAG1;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date tranDate;
+    private String ACCName;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createDate;
 }

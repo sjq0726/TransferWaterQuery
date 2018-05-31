@@ -1,6 +1,8 @@
 package com.fuzamei.demo.dao;
 
 import com.fuzamei.demo.model.User;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 public interface UserDao {
 
@@ -11,4 +13,6 @@ public interface UserDao {
     User findUser(String token);
 
     boolean createUser(User user);
+
+    User findUserByToken(@Param("token") String token);
 }

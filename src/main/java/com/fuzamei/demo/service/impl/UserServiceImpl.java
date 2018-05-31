@@ -38,5 +38,11 @@ public class UserServiceImpl implements UserService {
         return userDao.createUser(user);
     }
 
+    @Override
+    public User findUserByToken(String token) {
+        User user=userDao.findUserByToken(token);
+        return user;
+    }
+
 
 }

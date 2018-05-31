@@ -26,6 +26,7 @@ public class TokenInterceptor  implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         LOGGER.info("对用户的token信息进行校验");
         response.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("utf-8");
         String token = request.getHeader("token");
         ResponseData responseData = ResponseData.ok();
         //token存在

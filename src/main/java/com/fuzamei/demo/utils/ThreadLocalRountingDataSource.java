@@ -1,5 +1,6 @@
-package com.fuzamei.demo.datasource;
+package com.fuzamei.demo.utils;
 
+import com.fuzamei.demo.datasource.DataSourceTypeManager;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 public class ThreadLocalRountingDataSource extends AbstractRoutingDataSource {

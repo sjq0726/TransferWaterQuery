@@ -18,5 +18,11 @@
     <insert id="createUser" parameterType="com.fuzamei.demo.model.User" >
         INSERT INTO user(username,password) VALUES (#{username},#{password})
     </insert>
+    
+    <select id="findUserByToken" parameterType="java.lang.String" resultType="com.fuzamei.demo.model.User">
+        SELECT username,password,token
+        FROM demo.user
+        WHERE token=#{token}
+    </select>
 
 </mapper>
